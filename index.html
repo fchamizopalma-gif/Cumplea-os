@@ -41,7 +41,7 @@ tr.hoy td{background:#fff4ec}
 <h3>Calendario por mes</h3><div class="months" id="meses"></div></main>
 <aside><h3>Ranking por edad</h3><div class="rank"><button id="ord">Mayor → menor</button><table><thead><tr><th>#</th><th>Nombre</th><th>Nacimiento</th><th>Edad</th></tr></thead><tbody id="tb"></tbody></table></div></aside></div></div>
 <script>
-const P=[["Lucas",6,3,1996],["Chamo",4,7,1996],["Félix",28,7,1996],["Xaer",7,10,1996],["Juanca",19,11,1996],["Elson",28,11,1996],["Nico",11,12,1996],["Toco",22,12,1996],["Adonis",3,3,1997],["Chico",9,6,1997],["Gonza",17,3,1998],["Claudio",27,5,1998],["Cristian",10,6,1998],["Maxi",22,9,1998]];
+const P=[["Lucas",6,3,1996],["Chamo",4,7,1996],["Félix",28,7,1996],["Xaer",7,10,1996],["Juanca",19,11,1996],["Elson",28,11,1996],["Nico",11,12,1996],["Toco",22,12,1997],["Adonis",3,3,1997],["Chico",9,6,1997],["Gonza",17,3,1998],["Claudio",27,5,1998],["Cristian",10,6,1998],["Maxi",22,9,1998]];
 const M=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 const t=new Date();const hoy=new Date(t.getFullYear(),t.getMonth(),t.getDate());
 document.getElementById('hoy').textContent="Hoy es "+hoy.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});

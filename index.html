@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cumpleaños PCR</title>
+<style>
+:root{--azul:#173C70;--naranjo:#EE7D31;--claro:#DBE3F2;--bg:#f6f8fc;--card:#fff;--txt:#14233b;--mut:#5d6b82}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+header{background:var(--azul);color:#fff;padding:28px 16px 70px}
+.w{max-width:960px;margin:0 auto;padding:0 16px}
+h1{margin:0 0 4px;font-size:1.7rem}header p{margin:0;opacity:.8}
+.hero{margin-top:-48px}
+.next{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 4px 18px #173c7022;border-left:6px solid var(--naranjo);display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.next .big{font-size:2.6rem;font-weight:700;color:var(--naranjo);line-height:1;min-width:90px;text-align:center}
+.next .big small{display:block;font-size:.8rem;color:var(--mut);font-weight:500}
+.next h2{margin:0;font-size:1.3rem;color:var(--azul)}.next p{margin:4px 0 0;color:var(--mut)}
+h3{color:var(--azul);margin:30px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.card{background:var(--card);border-radius:12px;padding:14px;border:1px solid var(--claro)}
+.card.today{border:2px solid var(--naranjo);background:#fff4ec}
+.card b{color:var(--azul);font-size:1.05rem}.card .d{color:var(--mut);font-size:.9rem;margin-top:2px}
+.tag{display:inline-block;margin-top:8px;padding:2px 9px;border-radius:99px;font-size:.78rem;background:var(--claro);color:var(--azul)}
+.tag.o{background:var(--naranjo);color:#fff}
+.months{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:40px}
+.m{background:var(--card);border-radius:12px;border:1px solid var(--claro);overflow:hidden}
+.m h4{margin:0;padding:8px 12px;background:var(--claro);color:var(--azul);text-transform:capitalize;font-size:.95rem}
+.m ul{list-style:none;margin:0;padding:8px 12px;min-height:44px}.m li{padding:3px 0;display:flex;justify-content:space-between}
+.m li span{color:var(--mut)}.m .e{color:#a9b4c7;font-size:.85rem}
+.m.cur h4{background:var(--azul);color:#fff}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+aside{position:sticky;top:12px}
+.rank{background:var(--card);border:1px solid var(--claro);border-radius:12px;overflow:hidden;margin-bottom:40px}
+.rank button{width:100%;border:0;background:var(--azul);color:#fff;padding:9px;font:inherit;cursor:pointer}
+.rank button:hover{background:var(--naranjo)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th{background:var(--claro);color:var(--azul);text-align:left;padding:7px 8px}
+td{padding:6px 8px;border-top:1px solid var(--claro)}td:first-child{color:var(--mut);width:28px}td:last-child{font-weight:700;color:var(--naranjo)}
+tr.hoy td{background:#fff4ec}
+@media(max-width:820px){.layout{grid-template-columns:1fr}aside{position:static}}
+</style></head><body>
+<header><div class="w"><h1>🎂 Cumpleaños PCR</h1><p id="hoy"></p></div></header>
+<div class="w hero"><div class="next" id="next"></div>
+<div class="layout"><main><h3>Próximos cumpleaños</h3><div class="grid" id="prox"></div>
+<h3>Calendario por mes</h3><div class="months" id="meses"></div></main>
+<aside><h3>Ranking por edad</h3><div class="rank"><button id="ord">Mayor → menor</button><table><thead><tr><th>#</th><th>Nombre</th><th>Nacimiento</th><th>Edad</th></tr></thead><tbody id="tb"></tbody></table></div></aside></div></div>
+<script>
+const P=[["Lucas",6,3,1996],["Chamo",4,7,1996],["Félix",28,7,1996],["Xaer",7,10,1996],["Juanca",19,11,1996],["Elson",28,11,1996],["Nico",11,12,1996],["Toco",22,12,1996],["Adonis",3,3,1997],["Chico",9,6,1997],["Gonza",17,3,1998],["Claudio",27,5,1998],["Cristian",10,6,1998],["Maxi",22,9,1998]];
+const M=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const t=new Date();const hoy=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+document.getElementById('hoy').textContent="Hoy es "+hoy.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const L=P.map(([n,d,m,a])=>{let f=new Date(hoy.getFullYear(),m-1,d);if(f<hoy)f=new Date(hoy.getFullYear()+1,m-1,d);
+ return{n,d,m,a,f,dias:Math.round((f-hoy)/864e5),edad:f.getFullYear()-a}}).sort((x,y)=>x.dias-y.dias);
+const txt=x=>x.dias==0?"¡Hoy! 🎉":x.dias==1?"Mañana":"en "+x.dias+" días";
+const n=L[0];
+document.getElementById('next').innerHTML=`<div class="big">${n.dias==0?"🎉":n.dias}<small>${n.dias==0?"hoy":"días"}</small></div><div><h2>${n.n} cumple ${n.edad} años</h2><p>${n.d} de ${M[n.m-1]} · ${txt(n)}</p></div>`;
+document.getElementById('prox').innerHTML=L.slice(0,6).map(x=>`<div class="card ${x.dias==0?'today':''}"><b>${x.n}</b><div class="d">${x.d} de ${M[x.m-1]}</div><span class="tag ${x.dias==0?'o':''}">${txt(x)} · ${x.edad} años</span></div>`).join('');
+document.getElementById('meses').innerHTML=M.map((nm,i)=>{const g=P.filter(p=>p[2]==i+1).sort((a,b)=>a[1]-b[1]);
+ return`<div class="m ${i==hoy.getMonth()?'cur':''}"><h4>${nm}</h4><ul>${g.length?g.map(p=>`<li>${p[0]}<span>${p[1]}</span></li>`).join(''):'<li class="e">—</li>'}</ul></div>`}).join('');
+let asc=true;
+function edad(a,m,d){let e=hoy.getFullYear()-a;if(hoy<new Date(hoy.getFullYear(),m-1,d))e--;return e}
+function rank(){const R=P.map(([n,d,m,a])=>({n,d,m,a,f:new Date(a,m-1,d),e:edad(a,m,d),hoy:hoy.getDate()==d&&hoy.getMonth()==m-1})).sort((x,y)=>asc?x.f-y.f:y.f-x.f);
+ document.getElementById('tb').innerHTML=R.map((r,i)=>`<tr class="${r.hoy?'hoy':''}"><td>${i+1}</td><td>${r.n}${r.hoy?' 🎂':''}</td><td>${r.d}/${r.m}/${r.a}</td><td>${r.e}</td></tr>`).join('');
+ document.getElementById('ord').textContent=asc?'Mayor → menor (clic para invertir)':'Menor → mayor (clic para invertir)'}
+document.getElementById('ord').onclick=()=>{asc=!asc;rank()};rank();
+</script></body></html>
